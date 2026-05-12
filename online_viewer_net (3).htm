@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Matthew McDougall | IT and Systems Analyst</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0c10;
+    --surface: #111318;
+    --surface2: #181b22;
+    --border: rgba(255,255,255,0.07);
+    --accent: #00d4ff;
+    --accent2: #7c5cfc;
+    --accent3: #00ff9d;
+    --text: #e8eaf0;
+    --muted: #6b7280;
+    --glow: 0 0 40px rgba(0,212,255,0.15);
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: "DM Sans", sans-serif;
+    font-weight: 300;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background-image:
+      radial-gradient(ellipse 80% 60% at 10% 10%, rgba(0,212,255,0.06) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 80% at 90% 80%, rgba(124,92,252,0.07) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.2rem 3rem;
+    background: rgba(10,12,16,0.8);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo {
+    font-family: "Syne", sans-serif;
+    font-weight: 800;
+    font-size: 1.1rem;
+    letter-spacing: 0.04em;
+    color: var(--accent);
+  }
+
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a {
+    font-family: "DM Mono", monospace;
+    font-size: 0.75rem;
+    color: var(--muted);
+    text-decoration: none;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--accent); }
+
+  section {
+    position: relative;
+    z-index: 1;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 7rem 2.5rem;
+    text-align: center;
+  }
+
+  #hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-top: 9rem;
+    text-align: center;
+  }
+
+  .hero-tag {
+    font-family: "DM Mono", monospace;
+    font-size: 0.75rem;
+    color: var(--accent);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards 0.2s;
+  }
+
+  h1 {
+    font-family: "Syne", sans-serif;
+    font-size: clamp(3rem, 8vw, 6.5rem);
+    font-weight: 800;
+    line-height: 1.0;
+    letter-spacing: -0.02em;
+    opacity: 0;
+    animation: fadeUp 0.7s ease forwards 0.4s;
+  }
+
+  h1 .name-accent {
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-subtitle {
+    font-size: 1.1rem;
+    color: var(--muted);
+    max-width: 580px;
+    margin: 1.8rem auto 0;
+    font-weight: 400;
+    opacity: 0;
+    animation: fadeUp 0.7s ease forwards 0.6s;
+    text-align: center;
+  }
+
+  .hero-meta {
+    display: flex;
+    gap: 2.5rem;
+    margin-top: 3rem;
+    opacity: 0;
+    animation: fadeUp 0.7s ease forwards 0.8s;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .hero-meta-item { display: flex; flex-direction: column; align-items: center; }
+
+  .hero-meta-label {
+    font-family: "DM Mono", monospace;
+    font-size: 0.65rem;
+    color: var(--muted);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  .hero-meta-value {
+    font-family: "Syne", sans-serif;
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--text);
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.85rem 2rem;
+    border-radius: 6px;
+    font-family: "DM Mono", monospace;
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: all 0.25s;
+    cursor: pointer;
+    border: none;
+  }
+
+  .btn-primary { background: var(--accent); color: var(--bg); font-weight: 500; }
+  .btn-primary:hover {
+    background: #33dcff;
+    box-shadow: 0 0 25px rgba(0,212,255,0.4);
+    transform: translateY(-2px);
+  }
+
+  .btn-ghost { background: transparent; color: var(--text); border: 1px solid var(--border); }
+  .btn-ghost:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    transform: translateY(-2px);
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.2rem;
+    margin-bottom: 3.5rem;
+  }
+
+  .section-num {
+    font-family: "DM Mono", monospace;
+    font-size: 0.7rem;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+  }
+
+  .section-title {
+    font-family: "Syne", sans-serif;
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+
+  .section-line { flex: 1; height: 1px; background: var(--border); }
+
+  /* SKILLS */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.5rem;
+    text-align: left;
+  }
+
+  .skill-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.8rem;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+  }
+
+  .skill-card::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .skill-card:hover { transform: translateY(-4px); border-color: rgba(0,212,255,0.25); box-shadow: var(--glow); }
+  .skill-card:hover::before { opacity: 1; }
+
+  .skill-icon { width: 36px; height: 36px; object-fit: contain; margin-bottom: 1rem; display: block; }
+  .skill-name { font-family: "Syne", sans-serif; font-weight: 700; font-size: 1.05rem; margin-bottom: 0.4rem; }
+  .skill-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.6; }
+
+  .skill-level { margin-top: 1.2rem; height: 3px; background: var(--surface2); border-radius: 99px; overflow: hidden; }
+  .skill-level-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    border-radius: 99px;
+    transform-origin: left;
+    transform: scaleX(0);
+  }
+
+  @keyframes growBar { to { transform: scaleX(1); } }
+
+  /* TIMELINE */
+  .timeline { position: relative; padding-left: 2rem; text-align: left; }
+  .timeline::before {
+    content: "";
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 1px;
+    background: linear-gradient(to bottom, var(--accent), transparent);
+  }
+
+  .timeline-item { position: relative; padding-bottom: 3.5rem; padding-left: 2rem; }
+  .timeline-item::before {
+    content: "";
+    position: absolute;
+    left: -2.35rem;
+    top: 0.4rem;
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 12px var(--accent);
+  }
+
+  .timeline-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .timeline-role { font-family: "Syne", sans-serif; font-weight: 700; font-size: 1.15rem; }
+
+  .timeline-date {
+    font-family: "DM Mono", monospace;
+    font-size: 0.72rem;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    background: rgba(0,212,255,0.08);
+    padding: 0.25rem 0.75rem;
+    border-radius: 99px;
+    border: 1px solid rgba(0,212,255,0.2);
+    white-space: nowrap;
+  }
+
+  .timeline-company { font-size: 0.85rem; color: var(--muted); margin-bottom: 1rem; font-family: "DM Mono", monospace; letter-spacing: 0.05em; }
+  .timeline-desc { font-size: 0.9rem; color: #9ca3af; line-height: 1.75; }
+  .timeline-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem; }
+
+  .tag {
+    font-family: "DM Mono", monospace;
+    font-size: 0.68rem;
+    color: var(--accent2);
+    background: rgba(124,92,252,0.1);
+    border: 1px solid rgba(124,92,252,0.25);
+    padding: 0.2rem 0.65rem;
+    border-radius: 4px;
+    letter-spacing: 0.05em;
+  }
+
+  /* PROJECT */
+  .project-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2.5rem;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+    text-align: left;
+  }
+
+  .project-card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 60% 50% at 50% 0%, rgba(0,212,255,0.06), transparent);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .project-card:hover { transform: translateY(-5px); box-shadow: 0 20px 60px rgba(0,0,0,0.4), var(--glow); border-color: rgba(0,212,255,0.2); }
+  .project-card:hover::after { opacity: 1; }
+
+  .project-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: "DM Mono", monospace;
+    font-size: 0.68rem;
+    color: var(--accent3);
+    background: rgba(0,255,157,0.08);
+    border: 1px solid rgba(0,255,157,0.2);
+    padding: 0.3rem 0.8rem;
+    border-radius: 99px;
+    margin-bottom: 1.2rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .project-badge img { width: 14px; height: 14px; object-fit: contain; }
+  .project-title { font-family: "Syne", sans-serif; font-size: 1.5rem; font-weight: 700; margin-bottom: 1rem; }
+  .project-desc { color: #9ca3af; font-size: 0.9rem; line-height: 1.8; margin-bottom: 1.5rem; }
+
+  .project-features { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; margin-bottom: 1.5rem; }
+  .project-feature { display: flex; align-items: center; gap: 0.5rem; font-size: 0.83rem; color: var(--muted); }
+  .project-feature-arrow { width: 12px; height: 12px; object-fit: contain; flex-shrink: 0; opacity: 0.7; }
+
+  /* EDUCATION */
+  .edu-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; text-align: left; }
+
+  .edu-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 2rem;
+    transition: transform 0.3s, border-color 0.3s;
+  }
+
+  .edu-card:hover { transform: translateY(-3px); border-color: rgba(124,92,252,0.3); }
+  .edu-school { font-family: "Syne", sans-serif; font-weight: 700; font-size: 1.1rem; margin-bottom: 0.3rem; }
+  .edu-degree { font-size: 0.88rem; color: var(--muted); margin-bottom: 1rem; }
+  .edu-stats { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+  .edu-stat { display: flex; flex-direction: column; }
+  .edu-stat-val { font-family: "Syne", sans-serif; font-weight: 700; font-size: 1.2rem; color: var(--accent); }
+  .edu-stat-label { font-family: "DM Mono", monospace; font-size: 0.65rem; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; }
+
+  /* CONTACT */
+  .contact-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 3.5rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .contact-box::before {
+    content: "";
+    position: absolute;
+    top: -50%; left: -50%;
+    width: 200%; height: 200%;
+    background: radial-gradient(ellipse 40% 40% at 50% 50%, rgba(0,212,255,0.05), transparent);
+    pointer-events: none;
+  }
+
+  .contact-box h2 { font-family: "Syne", sans-serif; font-size: 2.2rem; font-weight: 800; margin-bottom: 1rem; position: relative; z-index: 2; }
+  .contact-box p { color: var(--muted); max-width: 480px; margin: 0 auto 2.5rem; font-size: 0.95rem; position: relative; z-index: 2; }
+  .contact-links { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; position: relative; z-index: 2; }
+
+  .btn-icon { width: 16px; height: 16px; object-fit: contain; flex-shrink: 0; }
+
+  footer {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 2.5rem;
+    border-top: 1px solid var(--border);
+    font-family: "DM Mono", monospace;
+    font-size: 0.72rem;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+  }
+
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+
+  .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { gap: 1.2rem; }
+    section { padding: 5rem 1.5rem; }
+    .contact-box { padding: 2rem 1.5rem; }
+    .project-features { grid-template-columns: 1fr; }
+  }
+
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--accent2); border-radius: 99px; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">MM</div>
+  <ul class="nav-links">
+    <li><a href="#hero">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#education">Education</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<section id="hero">
+  <div class="hero-tag">// IT and Systems Analyst · Graduating Spring 2027</div>
+  <h1>Matthew<br><span class="name-accent">McDougall</span></h1>
+  <p class="hero-subtitle">
+    IT student at UNF with a solid foundation in systems troubleshooting, database design, and software development. I enjoy solving technical problems and am always looking to pick up new skills along the way.
+  </p>
+
+  <div class="hero-meta">
+    <div class="hero-meta-item">
+      <span class="hero-meta-label">University</span>
+      <span class="hero-meta-value">UNF, Jacksonville FL</span>
+    </div>
+    <div class="hero-meta-item">
+      <span class="hero-meta-label">GPA</span>
+      <span class="hero-meta-value">3.0 / 4.0</span>
+    </div>
+    <div class="hero-meta-item">
+      <span class="hero-meta-label">Graduation</span>
+      <span class="hero-meta-value">Spring 2027</span>
+    </div>
+    <div class="hero-meta-item">
+      <span class="hero-meta-label">Focus</span>
+      <span class="hero-meta-value">IT / Systems Analysis</span>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-header reveal">
+    <span class="section-num">01</span>
+    <h2 class="section-title">Technical Skills</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="skills-grid">
+    <div class="skill-card reveal">
+      <img class="skill-icon" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg" alt="SQL">
+      <div class="skill-name">SQL</div>
+      <div class="skill-desc">Designing relational databases, writing queries, and building structured schemas for real-world use cases.</div>
+      <div class="skill-level"><div class="skill-level-fill" style="--w:0.85"></div></div>
+    </div>
+    <div class="skill-card reveal">
+      <img class="skill-icon" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" alt="Python">
+      <div class="skill-name">Python</div>
+      <div class="skill-desc">Scripting, automation, and data manipulation. Comfortable with core libraries and problem-solving workflows.</div>
+      <div class="skill-level"><div class="skill-level-fill" style="--w:0.70"></div></div>
+    </div>
+    <div class="skill-card reveal">
+      <img class="skill-icon" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg" alt="Java">
+      <div class="skill-name">Java</div>
+      <div class="skill-desc">Object-oriented programming fundamentals and software development principles from CS coursework at UNF.</div>
+      <div class="skill-level"><div class="skill-level-fill" style="--w:0.65"></div></div>
+    </div>
+    <div class="skill-card reveal">
+      <img class="skill-icon" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linux/linux-original.svg" alt="IT Troubleshooting">
+      <div class="skill-name">IT Troubleshooting</div>
+      <div class="skill-desc">A+ background in hardware, software, networking, and diagnosing technical problems under pressure.</div>
+      <div class="skill-level"><div class="skill-level-fill" style="--w:0.80"></div></div>
+    </div>
+    <div class="skill-card reveal">
+      <img class="skill-icon" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/ubuntu/ubuntu-plain.svg" alt="Systems Analysis">
+      <div class="skill-name">Systems Analysis</div>
+      <div class="skill-desc">Understanding how software and hardware work together and figuring out the best technical solutions for real problems.</div>
+      <div class="skill-level"><div class="skill-level-fill" style="--w:0.72"></div></div>
+    </div>
+    <div class="skill-card reveal">
+      <img class="skill-icon" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg" alt="Communication and Operations">
+      <div class="skill-name">Communication and Operations</div>
+      <div class="skill-desc">Real-world customer service, team coordination, and hands-on problem solving in fast-paced environments.</div>
+      <div class="skill-level"><div class="skill-level-fill" style="--w:0.90"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="section-header reveal">
+    <span class="section-num">02</span>
+    <h2 class="section-title">Experience</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="timeline">
+    <div class="timeline-item reveal">
+      <div class="timeline-header">
+        <span class="timeline-role">Target Tech Team</span>
+        <span class="timeline-date">2022 - 2024</span>
+      </div>
+      <div class="timeline-company">Target · Jacksonville, FL</div>
+      <div class="timeline-desc">
+        Worked the tech floor helping customers with electronics, tablets, laptops, smart home devices, and accessories. Got pretty good at breaking down complicated product specs in a way that actually made sense to people. Stayed on top of new releases so I could give accurate recommendations. Worked closely with my team to keep the department organized and moving during busy periods.
+      </div>
+      <div class="timeline-tags">
+        <span class="tag">Tech Support</span>
+        <span class="tag">Customer Relations</span>
+        <span class="tag">Product Knowledge</span>
+        <span class="tag">Electronics</span>
+      </div>
+    </div>
+
+    <div class="timeline-item reveal">
+      <div class="timeline-header">
+        <span class="timeline-role">Delivery Driver and Server</span>
+        <span class="timeline-date">2024 - 2026</span>
+      </div>
+      <div class="timeline-company">Marco's Pizza · Jacksonville, FL</div>
+      <div class="timeline-desc">
+        Ran both in-store service and deliveries at the same time, which taught me a lot about managing time and staying calm when things got busy. Made sure orders went out correctly and that every customer had a good experience. Built a reputation for showing up consistently and being someone the team could count on.
+      </div>
+      <div class="timeline-tags">
+        <span class="tag">Time Management</span>
+        <span class="tag">Logistics</span>
+        <span class="tag">Customer Service</span>
+        <span class="tag">Team Collaboration</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-header reveal">
+    <span class="section-num">03</span>
+    <h2 class="section-title">Projects</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="project-card reveal">
+    <div class="project-badge">
+      <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg" alt="SQL">
+      Featured Project
+    </div>
+    <div class="project-title">Academic Curriculum Database System</div>
+    <div class="project-desc">
+      Built a relational SQL database to manage university-level academic data including students, courses, and syllabi. The whole point was to make it easy to search through and find what you need without it being a headache. The schema connects student enrollment records directly to their courses and course syllabi so everything is organized and accessible.
+    </div>
+    <div class="project-features">
+      <span class="project-feature">
+        <img class="project-feature-arrow" src="https://cdn.jsdelivr.net/npm/lucide-static@0.383.0/icons/arrow-right.svg" alt="">
+        Student enrollment tracking
+      </span>
+      <span class="project-feature">
+        <img class="project-feature-arrow" src="https://cdn.jsdelivr.net/npm/lucide-static@0.383.0/icons/arrow-right.svg" alt="">
+        Course and curriculum schema
+      </span>
+      <span class="project-feature">
+        <img class="project-feature-arrow" src="https://cdn.jsdelivr.net/npm/lucide-static@0.383.0/icons/arrow-right.svg" alt="">
+        Syllabus search and retrieval
+      </span>
+      <span class="project-feature">
+        <img class="project-feature-arrow" src="https://cdn.jsdelivr.net/npm/lucide-static@0.383.0/icons/arrow-right.svg" alt="">
+        Relational table joins
+      </span>
+      <span class="project-feature">
+        <img class="project-feature-arrow" src="https://cdn.jsdelivr.net/npm/lucide-static@0.383.0/icons/arrow-right.svg" alt="">
+        Query optimization
+      </span>
+      <span class="project-feature">
+        <img class="project-feature-arrow" src="https://cdn.jsdelivr.net/npm/lucide-static@0.383.0/icons/arrow-right.svg" alt="">
+        Structured data reporting
+      </span>
+    </div>
+    <div class="timeline-tags">
+      <span class="tag">SQL</span>
+      <span class="tag">Relational DB Design</span>
+      <span class="tag">Data Modeling</span>
+      <span class="tag">Queries and Joins</span>
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section id="education">
+  <div class="section-header reveal">
+    <span class="section-num">04</span>
+    <h2 class="section-title">Education</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="edu-grid">
+    <div class="edu-card reveal">
+      <div class="edu-school">University of North Florida</div>
+      <div class="edu-degree">B.S. in Information Technology</div>
+      <div class="edu-stats">
+        <div class="edu-stat">
+          <span class="edu-stat-val">3.0</span>
+          <span class="edu-stat-label">GPA</span>
+        </div>
+        <div class="edu-stat">
+          <span class="edu-stat-val">Spr 2027</span>
+          <span class="edu-stat-label">Graduation</span>
+        </div>
+        <div class="edu-stat">
+          <span class="edu-stat-val">UNF</span>
+          <span class="edu-stat-label">Jacksonville, FL</span>
+        </div>
+      </div>
+      <div style="margin-top:1.2rem;">
+        <div class="timeline-tags">
+          <span class="tag">SQL</span>
+          <span class="tag">Python</span>
+          <span class="tag">Java</span>
+          <span class="tag">Systems Analysis</span>
+          <span class="tag">IT Infrastructure</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="edu-card reveal">
+      <div class="edu-school">High School - CompTIA A+</div>
+      <div class="edu-degree">A+ Computer Certification Coursework</div>
+      <div style="margin-top: 1rem; color: #9ca3af; font-size: 0.88rem; line-height: 1.7;">
+        Completed A+ certification coursework covering hardware, operating systems, basic networking, and troubleshooting. It gave me a real foundation before I even got to college and is a big part of why I felt comfortable jumping into IT.
+      </div>
+      <div style="margin-top:1.2rem;">
+        <div class="timeline-tags">
+          <span class="tag">Hardware</span>
+          <span class="tag">Networking</span>
+          <span class="tag">Troubleshooting</span>
+          <span class="tag">OS Fundamentals</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="edu-card reveal">
+      <div class="edu-school">Academic Background</div>
+      <div class="edu-degree">Started in Computer Science, moved to IT</div>
+      <div style="margin-top: 1rem; color: #9ca3af; font-size: 0.88rem; line-height: 1.7;">
+        Started out in Computer Science and got solid exposure to programming with Java and Python. Eventually made the switch to IT because I was more interested in systems and infrastructure. The CS background still comes in handy and I think it makes me a stronger IT student overall.
+      </div>
+      <div style="margin-top:1.2rem;">
+        <div class="timeline-tags">
+          <span class="tag">CS Fundamentals</span>
+          <span class="tag">Java</span>
+          <span class="tag">Python</span>
+          <span class="tag">Systems Thinking</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" style="padding-bottom: 6rem;">
+  <div class="contact-box reveal">
+    <h2>Get In Touch</h2>
+    <p>I am actively looking for internship and entry-level IT opportunities or anything data related. If you think I could be a good fit for your team, feel free to reach out.</p>
+    <div class="contact-links">
+      <a href="mailto:matthewmcdougall04@gmail.com" class="btn btn-primary">
+        <img class="btn-icon" src="https://cdn.jsdelivr.net/npm/lucide-static@0.383.0/icons/mail.svg" alt="Email" style="filter:invert(1)">
+        Email Me
+      </a>
+      <a href="#" class="btn btn-ghost" id="resume-btn">
+        <img class="btn-icon" src="https://cdn.jsdelivr.net/npm/lucide-static@0.383.0/icons/file-text.svg" alt="Resume" style="filter:invert(1)">
+        View Resume
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>2025 Matthew McDougall &nbsp;·&nbsp; UNF Class of 2027 &nbsp;·&nbsp; Jacksonville, FL</p>
+</footer>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add("visible"); });
+  }, { threshold: 0.12 });
+  document.querySelectorAll(".reveal").forEach(el => observer.observe(el));
+
+  const barObserver = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.querySelectorAll(".skill-level-fill").forEach(bar => {
+          const w = parseFloat(bar.style.getPropertyValue("--w") || 1);
+          bar.style.transform = "scaleX(0)";
+          bar.style.transition = "none";
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              bar.style.transition = "transform 1.2s cubic-bezier(0.4,0,0.2,1)";
+              bar.style.transform = "scaleX(" + w + ")";
+            });
+          });
+        });
+      }
+    });
+  }, { threshold: 0.3 });
+  document.querySelectorAll(".skills-grid").forEach(el => barObserver.observe(el));
+
+  const sections = document.querySelectorAll("section[id]");
+  const navLinks = document.querySelectorAll(".nav-links a");
+  window.addEventListener("scroll", () => {
+    let current = "";
+    sections.forEach(s => { if (window.scrollY >= s.offsetTop - 200) current = s.id; });
+    navLinks.forEach(a => {
+      a.style.color = a.getAttribute("href") === "#" + current ? "var(--accent)" : "";
+    });
+  });
+
+  const pdfB64 = "JVBERi0xLjQKJZOMi54gUmVwb3J0TGFiIEdlbmVyYXRlZCBQREYgZG9jdW1lbnQgaHR0cDovL3d3dy5yZXBvcnRsYWIuY29tCjEgMCBvYmoKPDwKL0YxIDIgMCBSIC9GMiAzIDAgUgo+PgplbmRvYmoKMiAwIG9iago8PAovQmFzZUZvbnQgL0hlbHZldGljYSAvRW5jb2RpbmcgL1dpbkFuc2lFbmNvZGluZyAvTmFtZSAvRjEgL1N1YnR5cGUgL1R5cGUxIC9UeXBlIC9Gb250Cj4+CmVuZG9iagozIDAgb2JqCjw8Ci9CYXNlRm9udCAvSGVsdmV0aWNhLUJvbGQgL0VuY29kaW5nIC9XaW5BbnNpRW5jb2RpbmcgL05hbWUgL0YyIC9TdWJ0eXBlIC9UeXBlMSAvVHlwZSAvRm9udAo+PgplbmRvYmoKNCAwIG9iago8PAovQ29udGVudHMgOCAwIFIgL01lZGlhQm94IFsgMCAwIDYxMiA3OTIgXSAvUGFyZW50IDcgMCBSIC9SZXNvdXJjZXMgPDwKL0ZvbnQgMSAwIFIgL1Byb2NTZXQgWyAvUERGIC9UZXh0IC9JbWFnZUIgL0ltYWdlQyAvSW1hZ2VJIF0KPj4gL1JvdGF0ZSAwIC9UcmFucyA8PAoKPj4gCiAgL1R5cGUgL1BhZ2UKPj4KZW5kb2JqCjUgMCBvYmoKPDwKL1BhZ2VNb2RlIC9Vc2VOb25lIC9QYWdlcyA3IDAgUiAvVHlwZSAvQ2F0YWxvZwo+PgplbmRvYmoKNiAwIG9iago8PAovQXV0aG9yIChcKGFub255bW91c1wpKSAvQ3JlYXRpb25EYXRlIChEOjIwMjYwNTExMjAyMTQ4KzAwJzAwJykgL0NyZWF0b3IgKFwodW5zcGVjaWZpZWRcKSkgL0tleXdvcmRzICgpIC9Nb2REYXRlIChEOjIwMjYwNTExMjAyMTQ4KzAwJzAwJykgL1Byb2R1Y2VyIChSZXBvcnRMYWIgUERGIExpYnJhcnkgLSB3d3cucmVwb3J0bGFiLmNvbSkgCiAgL1N1YmplY3QgKFwodW5zcGVjaWZpZWRcKSkgL1RpdGxlIChcKGFub255bW91c1wpKSAvVHJhcHBlZCAvRmFsc2UKPj4KZW5kb2JqCjcgMCBvYmoKPDwKL0NvdW50IDEgL0tpZHMgWyA0IDAgUiBdIC9UeXBlIC9QYWdlcwo+PgplbmRvYmoKOCAwIG9iago8PAovRmlsdGVyIFsgL0FTQ0lJODVEZWNvZGUgL0ZsYXRlRGVjb2RlIF0gL0xlbmd0aCAxOTUyCj4+CnN0cmVhbQpHYXRtOz51VEs7J1JmLkdnbyReTSI1X1tNU0BFSk8kSlE/LWQla1RtI1s5a2dEOUo0MllbUkNncElNVFw6WFwnZSVLZEtQRj9lKmJrTHVndElYTSNPYWJla01sLUNsUHIuKFkjbmo+KCtrbWAnLlQpOlM8UyEuOEtVVklraFQnJEBYMFQqc1tKbCtOImFXJDFqQDJQMnNUMFNMcWFiSCQiRVdaWk1nYFNATXJSJzc6Im01SjdWOzxmKS5fOD4sQU5hWy9wNGZHPzFqciMwPkRIViw0YXNoVmttKjIiX25JM19ZW1FfKkNKM1QlSldHNkZAcGosMEBhQypqTkA+cy1SOGMySUtJZ2ZaUD02V04zRkMxMFdgKjUnb1xiZCJvVzhadFktYi0uLFxRYTxXYk9oJFI4YkFBbV9INT5CYWtzIVMwaydmTy5bU1Iza21RZipjYGJMTjFGMSRdPS9VJ15gMF8yYCtCPEcjMCllXipSYnBdWlxtNVAuSSJrN0IqJW8pNTonQl8oQztIZDpmP1VPayQ0SiU9Q1RMVGV0K0BaRUlDSEVQNF4mIyRScSZXVm80SVdbJSguQjlRP05PN0VUV1ZCOjhIc15OcFB1SmhVJiQ+XUYlUDdAQzVVaWwsLjpTMT8rZyc5X280Y1heYi4xdV9USmlqbShCUjo8YSpGXS1iSUhoPWsxY05QSUZgKTlXOmxxcTtMckZyL2dPYTE3TCwtYjlkNnJlJjcqKHQlQ2VoTV1xby4+LmlmLGdKcWNZVEc3WlQyKWQ4XWoiayJWcHFRczJbbDxHcDRvLD5dUCQlUlE/UShvUVFGNyJRPTtgRDk7LzQjIzFEM0hILEVPPHQiPFpvZ3JTcWpZUkNpMVNgJW0tMm1qSFFjJDZhJTxxbEhaJV5RM0ZjW3MkWXVnbV02Pm9QK2giXWdIcls4K0RqTWcpXk8laDpxUFQmPDojZGtGcCZZMz9BbkZMZjJnRDdvc0pxVTk5OS1ZQVBgbWlrOVAmblY1KiNbUDlDPykqUyhqYk1zWChsKGluOy9hTS44QjVLJWM8K1YzM3FeRTBScUhmK24xbG9rNGomLTUrOE5vP0VlN0IiXEslNTVBaFk/MiUnVGovK1NpKGcuXyw6YVI6Im9oIl0jSk1nOGo2XTZxYC5SKUFDaWc9M2BoO2tLajZAI2Q2NVtrZCd1V3JcL1EoMG1ZSmdwTj0zUWw1PmFgSE0mTzNRcFlSQWY1cltXbkchdHFALTAvPilKISpkYmVfLnA+cjBENUFWQThvUTkpUCl0PDhYOyUpNFxwIVNAP1ZmM1crVm0mIUhkP11YRGx1MjphZjgmKTMjQiNUU0RBVUs+Ml1SJVI9TFBoLWZeMy80RnJlX2JCWF9fRWhzXTA0MztQNiJxUCE2QGEjX1FpTmgqSW1NKmpjWU5daT9iTC8tSVZDdGFGYiMrTzRLU2orRVkmJFY9cjlbLmlPNT5ibjNHOmVfITpsRVAoaDlcTSJIbCheO0tQMSlMYGdYPiU9MTMqUFZFPisrOmNFKy84QGlOYyksQ1sxTF1rZkRkLkNuK0whSCpkJHVaLDRnLDQyQkAmXXVSXSdJMUpmYSg8bF5jVWVsQ0Q0OihNSUpDXjZPYD03PHEhdGtHZixbSjZWUzZYP3J0bl5IaWNUVlI1LzlTRCJxRmsySVM+X2Ngb25CYzpSY3M9azxkJT0+KTA8ZGJLUlYpczU3TkRNO0hXWl5GP1g8YGJPOkcoPFxOcTtRMz5aVEA4WzErcSY5UzI3czJaLVBGX188OmsvZzRBNWglUEgtZDBfO0MwO09PRnNRKU5hWiQrRVNTJyEiOkhTVG9FZ1lAOFw0UigxJVEhKT5dXk10XGM0Sjk0RF9kanBtJk1XLCR1IUoqTChNO0JFQi10KG9jSSpVKVNjVXFlJUVpOTFrYl0naFZMSidSTUUmL2ZtSllgdGJDPGQucCE5VXJFZURjVXRsV0NPOW8sRUc4LC9YVDo7cUA1JylVNGNSMWwtPEtZdXVPQWxGUi43QGEjJjtUYSxrTV9eN0svVCQpVFw0J0RnIXFAZm1vRlw3RmgrOjhWWixgJHBWT1JuLiU0O1M8LV1pJCZSIVJydFMzR3BzSERGW2RMS28rJmEoWDd1bDVocVU0RW5sMy8uYEdyISpIQkk3Jm02YUAyP2djTFBwU1dpUiRYNWNXQ3NbcGlILjVwLG4kOyM+YHBCZStDOSRQTFNJUWtCPl1gVzZfWyVrM3NjaCM4PytbI2AvQDokXTJAUGBQJUAscylAV0B0ZGVoRzdYUWxSbHFNLWlrOCYqOjNPZnQ7MjlfTV4xR2plP2g7aSQ0RFUiNUw4ZixLMWVwImZGKilMLVpdJUFQM3JASTctXC9EX0VETiZwI05MPHI6TUIwQDlFVCI1Y1EqZFtEaWtlOkhLb15uSnRIaXRSUEMoOjI5TSNJOGBTKmxDV15bPF9dcWY5PV48PDU6OWhXbjA6O1sicDFuKlJhNVM8ckIxRGwkcykmKy9RKCMiXm5eUCkzUzdHVlNbZFRKKnI1aDU6cC0rVV51RltCKUheSDhqdUVCNnUqYjo9QDghMjJsbTJ+PmVuZHN0cmVhbQplbmRvYmoKeHJlZgowIDkKMDAwMDAwMDAwMCA2NTUzNSBmIAowMDAwMDAwMDczIDAwMDAwIG4gCjAwMDAwMDAxMTQgMDAwMDAgbiAKMDAwMDAwMDIyMSAwMDAwMCBuIAowMDAwMDAwMzMzIDAwMDAwIG4gCjAwMDAwMDA1MjYgMDAwMDAgbiAKMDAwMDAwMDU5NCAwMDAwMCBuIAowMDAwMDAwODc3IDAwMDAwIG4gCjAwMDAwMDA5MzYgMDAwMDAgbiAKdHJhaWxlcgo8PAovSUQgCls8MzMwYjc1NzI4YTg2ZTM2ZGVjNGVlZGYzNjg5OTRiODE+PDMzMGI3NTcyOGE4NmUzNmRlYzRlZWRmMzY4OTk0YjgxPl0KJSBSZXBvcnRMYWIgZ2VuZXJhdGVkIFBERiBkb2N1bWVudCAtLSBkaWdlc3QgKGh0dHA6Ly93d3cucmVwb3J0bGFiLmNvbSkKCi9JbmZvIDYgMCBSCi9Sb290IDUgMCBSCi9TaXplIDkKPj4Kc3RhcnR4cmVmCjI5NzkKJSVFT0YK";
+  document.getElementById("resume-btn").addEventListener("click", function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    const binary = atob(pdfB64);
+    const bytes = new Uint8Array(binary.length);
+    for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+    const blob = new Blob([bytes], { type: "application/pdf" });
+    const url = URL.createObjectURL(blob);
+    window.open(url, "_blank");
+  });
+</script>
+
+</body>
+</html>
